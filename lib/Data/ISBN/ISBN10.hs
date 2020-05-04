@@ -2,11 +2,12 @@
 
 module Data.ISBN.ISBN10
     ( ISBN10
-    , ISBN10ValidationError(..)
     , validateISBN10
     , confirmISBN10CheckDigit
     , calculateISBN10CheckDigit
     , isValidISBN10CheckDigit
+    , ISBN10ValidationError(..)
+    , renderISBN10ValidationError
     ) where
 
 import           Control.Monad

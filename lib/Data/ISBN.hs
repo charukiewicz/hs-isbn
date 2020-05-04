@@ -1,8 +1,23 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.ISBN
-    ( module Data.ISBN.ISBN10
-    , module Data.ISBN.ISBN13
+    ( -- * Introduction
+      -- $introduction
+
+      -- * ISBN-10
+      ISBN10
+    , validateISBN10
+    , confirmISBN10CheckDigit
+    , calculateISBN10CheckDigit
+    , isValidISBN10CheckDigit
+    , ISBN10ValidationError
+    , renderISBN10ValidationError
+
+      -- * ISBN-13
+    , ISBN13
+
+      -- * Conversion between ISBN-10 and ISBN-13
+      -- $conversion
     , convertISBN10toISBN13
     , convertISBN13toISBN10
     ) where
@@ -11,6 +26,17 @@ import           Data.ISBN.ISBN10
 import           Data.ISBN.ISBN13
 
 import           Data.Text        as Text
+
+-- $introduction
+--
+-- This library contains tools for validating and working with ISBNs.
+
+------------------------------------
+
+-- $conversion
+--
+-- ISBN values can be converted from ISBN-10 to ISBN-13 and vise versa.
+
 
 convertISBN10toISBN13 :: ISBN10 -> ISBN13
 convertISBN10toISBN13 = undefined
