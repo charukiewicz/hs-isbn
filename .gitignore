@@ -1,0 +1,27 @@
+# Haskell
+dist*
+dist-*
+**/static/tmp/
+**/static/combined/
+**/client_session_key.aes
+*.hi
+*.o
+*.chi
+*.chs.h
+*.dyn_o
+*.dyn_hi
+.hsenv*
+cabal-dev/
+.cabal-sandbox
+cabal.sandbox.config
+*~
+\#*
+.ghc.environment.*
+.ghci-build-artifacts
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+[._]sw[a-p]
+Session.vim

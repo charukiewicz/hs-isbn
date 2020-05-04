@@ -1,0 +1,36 @@
+cabal-version:       2.4
+
+name:                isbn
+version:             0.1.0.0
+synopsis:            ISBN validation and tools
+description:         See the README at <https://github.com/charukiewicz/isbn#readme>
+homepage:            https://github.com/charukiewicz/isbn
+bug-reports:         https://github.com/charukiewicz/isbn/issues
+license:             Apache-2.0
+license-file:        LICENSE
+author:              Christian Charukiewicz
+maintainer:          c.charukiewicz@gmail.com
+copyright:           2020 Christian Charukiewicz
+category:            Data
+extra-source-files:  CHANGELOG.md
+
+library
+  exposed-modules:     Data.ISBN
+                     , Data.ISBN.ISBN10
+                     , Data.ISBN.ISBN13
+  -- other-modules:
+  -- other-extensions:
+  build-depends:       base >=4.12
+                     , text
+  hs-source-dirs:      lib
+  default-language:    Haskell2010
+
+
+test-suite isbn-test
+  default-language:    Haskell2010
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  build-depends:       base >=4.12
+                     , hspec
+                     , isbn
