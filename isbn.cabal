@@ -23,6 +23,15 @@ library
   build-depends:       base >=4.12
                      , text
   hs-source-dirs:      lib
+  ghc-options:         -Wall
+                       -Wcompat
+                       -Wmissing-signatures
+                       -Wname-shadowing
+                       -Wtabs
+                       -Werror=incomplete-patterns
+                       -Werror=incomplete-uni-patterns
+                       -Werror=incomplete-record-updates
+                       -Werror
   default-language:    Haskell2010
 
 
@@ -34,3 +43,4 @@ test-suite isbn-test
   build-depends:       base >=4.12
                      , hspec
                      , isbn
+                     , text

@@ -3,6 +3,7 @@
 module Main (main) where
 
 import           Data.ISBN
+import           Data.ISBN.ISBN10
 import           Data.Text        ( pack )
 
 import           Data.Traversable
@@ -52,3 +53,16 @@ main = hspec $ do
         testCheckDigit "4444444444" True
         testCheckDigit "9999999999" True
         testCheckDigit "999999999X" False
+
+    describe "Validating possible ISBN-10s" $ do
+        let testISBN10 isbn10 expecting =
+                it ("can " ++ (case expecting of Right _ -> "validate"; Left _ -> "reject  ") ++ " '" ++ isbn10 ++ "'") $
+                    validateISBN10 (pack isbn10) `shouldBe` expecting
+
+        testISBN10 "0-345-81602-1" (Right $ unsafeToISBN10 "0345816021")
+        testISBN10 "0345816021" (Right $ unsafeToISBN10 "0345816021")
+        testISBN10 "0-345-81602-0" (Left $ InvalidCheckDigit)
+        testISBN10 "0-345-X1602-0" (Left $ IllegalCharactersInBody)
+        testISBN10 "A-345-X1602-0" (Left $ IllegalCharactersInBody)
+        testISBN10 "A2345-X1602-0" (Left $ InvalidInputLength)
+        testISBN10 "345-81602-1"   (Left $ InvalidInputLength)
