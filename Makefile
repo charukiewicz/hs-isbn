@@ -1,4 +1,4 @@
-.PHONY: help test ghcid-test docs clean
+.PHONY: help test ghcid-test ghcid-cabal docs clean
 
 # 'help' target originally taken from: https://github.com/parsonsmatt/servant-persistent
 help: ## Print help documentation
@@ -13,6 +13,12 @@ docs: ## Generate the Haddock documentation
 ghcid-test: $(OBJECT_DIR) ## Run the tests with ghcid
 	ghcid \
 		--command="ghci -fobject-code -odir $(OBJECT_DIR) -hidir $(OBJECT_DIR) -O0 -ilib -itest test/Spec.hs" \
+		--reload="lib" \
+		--test="Main.main"
+
+ghcid-cabal: $(OBJECT_DIR) ## Run the tests with ghcid
+	ghcid \
+		--command="cabal repl --repl-options=-ilib --repl-options=-itest isbn:isbn-test" \
 		--reload="lib" \
 		--test="Main.main"
 
