@@ -7,10 +7,8 @@ module Data.ISBN
       -- * ISBN-10
       ISBN10
     , validateISBN10
-    , confirmISBN10CheckDigit
-    , calculateISBN10CheckDigit
-    , isValidISBN10CheckDigit
-    , ISBN10ValidationError
+      -- *** Validation Errors
+    , ISBN10ValidationError(..)
     , renderISBN10ValidationError
 
       -- * ISBN-13

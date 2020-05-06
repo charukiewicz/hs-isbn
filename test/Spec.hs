@@ -60,7 +60,8 @@ main = hspec $ do
                     validateISBN10 (pack isbn10) `shouldBe` expecting
 
         testISBN10 "0-345-81602-1" (Right $ unsafeToISBN10 "0345816021")
-        testISBN10 "0345816021" (Right $ unsafeToISBN10 "0345816021")
+        testISBN10 "0345816021"    (Right $ unsafeToISBN10 "0345816021")
+        testISBN10 "080701429X"    (Right $ unsafeToISBN10 "080701429X")
         testISBN10 "0-345-81602-0" (Left $ InvalidCheckDigit)
         testISBN10 "0-345-X1602-0" (Left $ IllegalCharactersInBody)
         testISBN10 "A-345-X1602-0" (Left $ IllegalCharactersInBody)

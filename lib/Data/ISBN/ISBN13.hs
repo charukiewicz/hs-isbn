@@ -5,9 +5,7 @@ module Data.ISBN.ISBN13
     , validateISBN13
     ) where
 
-import           Control.Monad
-import           Data.Char
-import           Data.Text     as Text
+import           Data.Text as Text
 
 
 newtype ISBN13 = ISBN13 Text
