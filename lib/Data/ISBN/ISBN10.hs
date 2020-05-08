@@ -151,13 +151,13 @@ numericValueToISBN10Char c  = Text.head $ pack $ show c
 isValidISBN10CheckDigit :: Char -> Bool
 isValidISBN10CheckDigit char = char `elem` ("1234567890X" :: String)
 
--- | Determines whether a character is numeric (e.g. in the range of @0-9@)
+-- | Determines whether a character is numeric (e.g. in the range of @0-9@).
 isNumericCharacter :: Char -> Bool
 isNumericCharacter char = char `elem` ("1234567890" :: String)
 
 
 -- | Allows for the generation of ISBN-10 values without any validation. This should
 -- only be used in special cases. For example, there have been several instances of
--- books published with an invalid ISBN-10
+-- books published with an invalid ISBN-10.
 unsafeToISBN10 :: Text -> ISBN10
 unsafeToISBN10 = ISBN10
