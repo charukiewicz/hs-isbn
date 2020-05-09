@@ -3,6 +3,7 @@
 module Data.ISBN.ISBN10
     ( ISBN10
     , validateISBN10
+    , renderISBN10
       -- * Validation Errors
     , ISBN10ValidationError(..)
     , renderISBN10ValidationError
@@ -66,6 +67,10 @@ validateISBN10 input = do
         Left InvalidCheckDigit
 
     pure $ ISBN10 inputWithoutHyphens
+
+
+renderISBN10 :: ISBN10 -> Text
+renderISBN10 (ISBN10 isbn10string) = isbn10string
 
 
 -- | Possible validation errors resulting from ISBN-10 validation.

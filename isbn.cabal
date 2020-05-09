@@ -44,5 +44,6 @@ test-suite isbn-test
                      , hspec
                      , isbn
                      , text
-  other-modules:       Data.ISBN.ISBN10Spec
+  other-modules:       Data.ISBNSpec
+                     , Data.ISBN.ISBN10Spec
                      , Data.ISBN.ISBN13Spec

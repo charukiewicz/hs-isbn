@@ -37,7 +37,14 @@ import           Data.Text        as Text
 
 
 convertISBN10toISBN13 :: ISBN10 -> ISBN13
-convertISBN10toISBN13 = undefined
+convertISBN10toISBN13 isbn10 =
+    unsafeToISBN13 $ isbn13Body <> isbn13CheckDigit
+      where
+        isbn13CheckDigit = Text.singleton . numericValueToISBN13Char $ calculateISBN13CheckDigit isbn13Body
+        isbn13Body = "978" <> isbn10Body
+        isbn10Body = Text.init $ renderISBN10 isbn10
+
+
 
 convertISBN13toISBN10 :: ISBN13 -> Either Text ISBN10
 convertISBN13toISBN10 = undefined
