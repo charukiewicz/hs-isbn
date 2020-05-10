@@ -29,6 +29,6 @@ spec = do
 
     describe "Calculating ISBN-13 check digits" $ do
         it "can calculate ISBN13 check digit" $ do
-            calculateISBN13CheckDigit "978030640615" `shouldBe` 7
-            calculateISBN13CheckDigit "978034581602" `shouldBe` 3
-            calculateISBN13CheckDigit "978080701429" `shouldBe` 5
+            calculateISBN13CheckDigitValue "978030640615" `shouldBe` 7
+            calculateISBN13CheckDigitValue "978034581602" `shouldBe` 3
+            calculateISBN13CheckDigitValue "978080701429" `shouldBe` 5

@@ -3,9 +3,10 @@
 module Data.ISBN.ISBN13
     ( ISBN13
     , validateISBN13
+    , renderISBN13
     , ISBN13ValidationError(..)
     , confirmISBN13CheckDigit
-    , calculateISBN13CheckDigit
+    , calculateISBN13CheckDigitValue
     , numericValueToISBN13Char
     , unsafeToISBN13
     ) where
@@ -39,6 +40,10 @@ validateISBN13 input = do
     pure $ ISBN13 inputWithoutHyphens
 
 
+renderISBN13 :: ISBN13 -> Text
+renderISBN13 (ISBN13 isbn13string) = isbn13string
+
+
 data ISBN13ValidationError
     = InvalidInputLength
     | IllegalCharactersInInput
@@ -52,10 +57,10 @@ isNumericCharacter char = char `elem` ("1234567890" :: String)
 
 confirmISBN13CheckDigit :: Text -> Bool
 confirmISBN13CheckDigit isbn13 =
-    (calculateISBN13CheckDigit $ Text.init isbn13) == (isbn13CharToNumericValue $ Text.last isbn13)
+    (calculateISBN13CheckDigitValue $ Text.init isbn13) == (isbn13CharToNumericValue $ Text.last isbn13)
 
-calculateISBN13CheckDigit :: Text -> Int
-calculateISBN13CheckDigit input =
+calculateISBN13CheckDigitValue :: Text -> Int
+calculateISBN13CheckDigitValue input =
     go 1 (unpack input) 0
       where
         go w charList acc =
