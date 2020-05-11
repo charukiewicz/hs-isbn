@@ -15,6 +15,7 @@ module Data.ISBN
       -- * ISBN-13
     , ISBN13
     , validateISBN13
+    , renderISBN13
       -- *** Validation Errors
     , ISBN13ValidationError(..)
 
@@ -64,11 +65,11 @@ convertISBN10toISBN13 isbn10 =
 
 -- | Convert an ISBN-13 to an ISBN-10. Since only ISBN-13s starting with '978'
 -- can be converted, this operation may fail.
-convertISBN13toISBN10 :: ISBN13 -> Either Text ISBN10
+convertISBN13toISBN10 :: ISBN13 -> Maybe ISBN10
 convertISBN13toISBN10 isbn13 = do
     let isbn13Text = renderISBN13 isbn13
-    unless ("978" `isPrefixOf` isbn13Text) $
-        Left "Only ISBN-13s that begin with '978' can be converted to ISBN-10s"
+    unless ("978" `isPrefixOf` isbn13Text)
+        Nothing -- "Only ISBN-13s that begin with '978' can be converted to ISBN-10s"
 
     let isbn10Body = Text.init $ Text.drop 3 isbn13Text
         isbn10CheckDigit = Text.singleton . numericValueToISBN10Char $ calculateISBN10CheckDigitValue isbn10Body

@@ -41,6 +41,15 @@ validateISBN13 input = do
     pure $ ISBN13 inputWithoutHyphens
 
 
+-- | Convert the 'ISBN13' value to a 'Text' string. Useful for displaying an
+-- ISBN-13 in an application interface or for storage in a database. 'ISBN13'
+-- values created using 'validateISBN13' will never contain hyphens.
+--
+-- /Example:/
+--
+-- @
+-- renderISBN13 (ISBN13 "9780345816023") == "9780345816023"
+-- @
 renderISBN13 :: ISBN13 -> Text
 renderISBN13 (ISBN13 isbn13string) = isbn13string
 
