@@ -7,17 +7,25 @@ module Data.ISBN
       -- * ISBN-10
       ISBN10
     , validateISBN10
+    , renderISBN10
       -- *** Validation Errors
     , ISBN10ValidationError(..)
     , renderISBN10ValidationError
 
       -- * ISBN-13
     , ISBN13
+    , validateISBN13
+      -- *** Validation Errors
+    , ISBN13ValidationError(..)
 
       -- * Conversion between ISBN-10 and ISBN-13
       -- $conversion
     , convertISBN10toISBN13
     , convertISBN13toISBN10
+      -- * Unsafe Creation
+      -- $unsafe
+    , unsafeToISBN10
+    , unsafeToISBN13
     ) where
 
 import           Data.ISBN.ISBN10
@@ -60,9 +68,17 @@ convertISBN13toISBN10 :: ISBN13 -> Either Text ISBN10
 convertISBN13toISBN10 isbn13 = do
     let isbn13Text = renderISBN13 isbn13
     unless ("978" `isPrefixOf` isbn13Text) $
-        Left "ISBN-13 does not begin with '978'"
+        Left "Only ISBN-13s that begin with '978' can be converted to ISBN-10s"
 
     let isbn10Body = Text.init $ Text.drop 3 isbn13Text
         isbn10CheckDigit = Text.singleton . numericValueToISBN10Char $ calculateISBN10CheckDigitValue isbn10Body
 
     pure $ unsafeToISBN10 $ isbn10Body <> isbn10CheckDigit
+
+-- $unsafe
+--
+-- In most cases, producing 'ISBN10' and 'ISBN13' values should be done using
+-- the 'validateISBN10' and 'validateISBN13' functions, which ensure the values
+-- they produce are valid. The functions below allow for the unsafe creation of
+-- ISBN values. They should only be used in special cases. For example, there
+-- have been several instances of books published with an invalid ISBN-10.

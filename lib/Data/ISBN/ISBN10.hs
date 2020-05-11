@@ -53,32 +53,41 @@ validateISBN10 input = do
     let inputWithoutHyphens = Text.filter (/= '-') input
 
     unless (Text.length inputWithoutHyphens == 10) $
-        Left InvalidInputLength
+        Left InvalidISBN10InputLength
 
     let invalidBodyCharacters = Text.filter (not . isNumericCharacter) (Text.init inputWithoutHyphens)
 
     unless (Text.length invalidBodyCharacters == 0) $
-        Left IllegalCharactersInBody
+        Left IllegalCharactersInISBN10Body
 
     unless (isValidISBN10CheckDigit $ Text.last inputWithoutHyphens) $
-        Left IllegalCharacterAsCheckDigit
+        Left IllegalCharacterAsISBN10CheckDigit
 
     unless (confirmISBN10CheckDigit inputWithoutHyphens) $
-        Left InvalidCheckDigit
+        Left InvalidISBN10CheckDigit
 
     pure $ ISBN10 inputWithoutHyphens
 
 
+-- | Convert the 'ISBN10' value to a 'Text' string. Useful for displaying an
+-- ISBN-10 in an application interface or for storage in a database. 'ISBN10'
+-- values created using 'validateISBN10' will never contain hyphens.
+--
+-- /Example:/
+--
+-- @
+-- renderISBN10 (ISBN10 "080701429X") == "080701429X"
+-- @
 renderISBN10 :: ISBN10 -> Text
 renderISBN10 (ISBN10 isbn10string) = isbn10string
 
 
 -- | Possible validation errors resulting from ISBN-10 validation.
 data ISBN10ValidationError
-    = InvalidInputLength           -- ^ The length of the input string is not 10 characters, not counting hyphens
-    | IllegalCharactersInBody      -- ^ The first nine characters of the ISBN-10 input contain non-numeric characters
-    | IllegalCharacterAsCheckDigit -- ^ The check digit of the ISBN-10 is not a valid character (@0-9@ or @\'X\'@)
-    | InvalidCheckDigit            -- ^ The check digit not valid for the given ISBN-10 string
+    = InvalidISBN10InputLength           -- ^ The length of the input string is not 10 characters, not counting hyphens
+    | IllegalCharactersInISBN10Body      -- ^ The first nine characters of the ISBN-10 input contain non-numeric characters
+    | IllegalCharacterAsISBN10CheckDigit -- ^ The check digit of the ISBN-10 is not a valid character (@0-9@ or @\'X\'@)
+    | InvalidISBN10CheckDigit            -- ^ The check digit is not valid for the given ISBN-10 string
     deriving (Show, Eq)
 
 
@@ -86,16 +95,16 @@ data ISBN10ValidationError
 renderISBN10ValidationError :: ISBN10ValidationError -> Text
 renderISBN10ValidationError validationError =
     case validationError of
-        InvalidInputLength ->
+        InvalidISBN10InputLength ->
             "An ISBN-10 must be 10 characters, not counting hyphens"
 
-        IllegalCharactersInBody ->
+        IllegalCharactersInISBN10Body ->
             "The first nine characters of an ISBN-10 must all be numbers"
 
-        IllegalCharacterAsCheckDigit ->
+        IllegalCharacterAsISBN10CheckDigit ->
             "The last character of the supplied ISBN-10 must be a number or the letter 'X'"
 
-        InvalidCheckDigit ->
+        InvalidISBN10CheckDigit ->
             "The supplied ISBN-10 is not valid"
 
 
@@ -161,8 +170,6 @@ isNumericCharacter :: Char -> Bool
 isNumericCharacter char = char `elem` ("1234567890" :: String)
 
 
--- | Allows for the generation of ISBN-10 values without any validation. This should
--- only be used in special cases. For example, there have been several instances of
--- books published with an invalid ISBN-10.
+-- | Allows for the generation of 'ISBN10' values without any validation.
 unsafeToISBN10 :: Text -> ISBN10
 unsafeToISBN10 = ISBN10
