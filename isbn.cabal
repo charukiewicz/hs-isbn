@@ -18,6 +18,7 @@ library
   exposed-modules:     Data.ISBN
                      , Data.ISBN.ISBN10
                      , Data.ISBN.ISBN13
+                     , Data.ISBN.Types
   -- other-modules:
   -- other-extensions:
   build-depends:       base >=4.9 && < 5.0

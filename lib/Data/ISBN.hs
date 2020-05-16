@@ -1,23 +1,26 @@
+{-# LANGUAGE FlexibleContexts  #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
+
 
 module Data.ISBN
     ( -- * Introduction
       -- $introduction
 
+      ISBN
+    , renderISBN
+
       -- * ISBN-10
-      ISBN10
     , validateISBN10
-    , renderISBN10
       -- *** Validation Errors
     , ISBN10ValidationError(..)
     , renderISBN10ValidationError
 
       -- * ISBN-13
-    , ISBN13
     , validateISBN13
-    , renderISBN13
       -- *** Validation Errors
     , ISBN13ValidationError(..)
+    , renderISBN13ValidationError
 
       -- * Conversion between ISBN-10 and ISBN-13
       -- $conversion
@@ -31,6 +34,7 @@ module Data.ISBN
 
 import           Data.ISBN.ISBN10
 import           Data.ISBN.ISBN13
+import           Data.ISBN.Types  ( ISBN (..) )
 
 import           Control.Monad
 import           Data.Text        as Text
@@ -40,6 +44,22 @@ import           Data.Text        as Text
 -- This library contains tools for validating and working with ISBNs.
 
 ------------------------------------
+
+-- | Convert an 'ISBN' value to a 'Text' string. Useful for displaying an
+-- ISBN in an application interface or for storage in a database. 'ISBN'
+-- values created using 'validateISBN10' or 'validateISBN13' will never
+-- contain hyphens.
+--
+-- /Example:/
+--
+-- @
+-- renderISBN (ISBN10 "080701429X")    == "080701429X"
+-- renderISBN (ISBN13 "9780060899226") == "9780060899226"
+-- @
+renderISBN :: ISBN -> Text
+renderISBN (ISBN10 i) = i
+renderISBN (ISBN13 i) = i
+
 
 -- $conversion
 --
@@ -54,20 +74,20 @@ import           Data.Text        as Text
 -- @
 -- convertISBN10toISBN13 (ISBN10 "0060899220") == ISBN13 "9780060899226"
 -- @
-convertISBN10toISBN13 :: ISBN10 -> ISBN13
+convertISBN10toISBN13 :: ISBN -> ISBN
 convertISBN10toISBN13 isbn10 =
     unsafeToISBN13 $ isbn13Body <> isbn13CheckDigit
       where
         isbn13CheckDigit = Text.singleton . numericValueToISBN13Char $ calculateISBN13CheckDigitValue isbn13Body
         isbn13Body = "978" <> isbn10Body
-        isbn10Body = Text.init $ renderISBN10 isbn10
+        isbn10Body = Text.init $ renderISBN isbn10
 
 
 -- | Convert an ISBN-13 to an ISBN-10. Since only ISBN-13s starting with '978'
 -- can be converted, this operation may fail.
-convertISBN13toISBN10 :: ISBN13 -> Maybe ISBN10
+convertISBN13toISBN10 :: ISBN -> Maybe ISBN
 convertISBN13toISBN10 isbn13 = do
-    let isbn13Text = renderISBN13 isbn13
+    let isbn13Text = renderISBN isbn13
     unless ("978" `isPrefixOf` isbn13Text)
         Nothing -- "Only ISBN-13s that begin with '978' can be converted to ISBN-10s"
 

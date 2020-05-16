@@ -1,9 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.ISBN.ISBN13
-    ( ISBN13
+    ( ISBN
     , validateISBN13
-    , renderISBN13
     , renderISBN13ValidationError
     , ISBN13ValidationError(..)
     , confirmISBN13CheckDigit
@@ -14,16 +13,13 @@ module Data.ISBN.ISBN13
 
 import           Control.Monad
 import           Data.Char
-import           Data.Text     as Text
+import           Data.Text       as Text
+
+import           Data.ISBN.Types
 
 
--- | Data type for representing ISBN-13 values. Should be created safely using
--- 'validateISBN13', but any string can be coerced into an @ISBN13@ value using
--- 'unsafeToISBN13'.
-newtype ISBN13 = ISBN13 Text
-    deriving (Show, Eq)
 
-validateISBN13 :: Text -> Either ISBN13ValidationError ISBN13
+validateISBN13 :: Text -> Either ISBN13ValidationError ISBN
 validateISBN13 input = do
     let inputWithoutHyphens = Text.filter (/= '-') input
 
@@ -40,18 +36,6 @@ validateISBN13 input = do
 
     pure $ ISBN13 inputWithoutHyphens
 
-
--- | Convert the 'ISBN13' value to a 'Text' string. Useful for displaying an
--- ISBN-13 in an application interface or for storage in a database. 'ISBN13'
--- values created using 'validateISBN13' will never contain hyphens.
---
--- /Example:/
---
--- @
--- renderISBN13 (ISBN13 "9780345816023") == "9780345816023"
--- @
-renderISBN13 :: ISBN13 -> Text
-renderISBN13 (ISBN13 isbn13string) = isbn13string
 
 
 -- | Possible validation errors resulting from ISBN-13 validation.
@@ -106,5 +90,5 @@ numericValueToISBN13Char c = Text.head $ pack $ show c
 
 
 -- | Allows for the generation of 'ISBN13' values without any validation.
-unsafeToISBN13 :: Text -> ISBN13
+unsafeToISBN13 :: Text -> ISBN
 unsafeToISBN13 = ISBN13

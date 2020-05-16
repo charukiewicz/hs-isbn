@@ -1,9 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.ISBN.ISBN10
-    ( ISBN10
+    ( ISBN
     , validateISBN10
-    , renderISBN10
       -- * Validation Errors
     , ISBN10ValidationError(..)
     , renderISBN10ValidationError
@@ -20,14 +19,10 @@ module Data.ISBN.ISBN10
 
 import           Control.Monad
 import           Data.Char
-import           Data.Text     as Text
+import           Data.Text       as Text
 
+import           Data.ISBN.Types
 
--- | Data type for representing ISBN-10 values. Should be created safely using
--- 'validateISBN10', but any string can be coerced into an @ISBN10@ value using
--- 'unsafeToISBN10'.
-newtype ISBN10 = ISBN10 Text
-    deriving (Show, Eq)
 
 
 -- | Used to safely create ISBN-10 values represented by the 'ISBN10' data type.
@@ -48,7 +43,7 @@ newtype ISBN10 = ISBN10 Text
 -- validateISBN10 "0-345-81602-B" == Left IllegalCharacterAsCheckDigit
 -- validateISBN10 "0-345-81602-3" == Left InvalidCheckDigit
 -- @
-validateISBN10 :: Text -> Either ISBN10ValidationError ISBN10
+validateISBN10 :: Text -> Either ISBN10ValidationError ISBN
 validateISBN10 input = do
     let inputWithoutHyphens = Text.filter (/= '-') input
 
@@ -68,18 +63,6 @@ validateISBN10 input = do
 
     pure $ ISBN10 inputWithoutHyphens
 
-
--- | Convert the 'ISBN10' value to a 'Text' string. Useful for displaying an
--- ISBN-10 in an application interface or for storage in a database. 'ISBN10'
--- values created using 'validateISBN10' will never contain hyphens.
---
--- /Example:/
---
--- @
--- renderISBN10 (ISBN10 "080701429X") == "080701429X"
--- @
-renderISBN10 :: ISBN10 -> Text
-renderISBN10 (ISBN10 isbn10string) = isbn10string
 
 
 -- | Possible validation errors resulting from ISBN-10 validation.
@@ -171,5 +154,5 @@ isNumericCharacter char = char `elem` ("1234567890" :: String)
 
 
 -- | Allows for the generation of 'ISBN10' values without any validation.
-unsafeToISBN10 :: Text -> ISBN10
+unsafeToISBN10 :: Text -> ISBN
 unsafeToISBN10 = ISBN10
