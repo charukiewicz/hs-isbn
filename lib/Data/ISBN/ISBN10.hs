@@ -25,7 +25,7 @@ import           Data.ISBN.Types
 
 
 
--- | Used to safely create ISBN-10 values represented by the 'ISBN10' data type.
+-- | Used to safely create 'ISBN10' values represented by the 'ISBN' data type.
 -- Assumes that the 'Data.Text.Text' input is an ISBN-10 string, either with or
 -- without hyphens.
 --
@@ -38,28 +38,28 @@ import           Data.ISBN.Types
 -- validateISBN10 "0-345-81602-1" == Right (ISBN10 "0345816021")
 -- validateISBN10 "0345816021"    == Right (ISBN10 "0345816021")
 -- validateISBN10 "0-807-01429-X" == Right (ISBN10 "080701429X")
--- validateISBN10 "0-345-816"     == Left InvalidInputLength
--- validateISBN10 "X-345-81602-1" == Left IllegalCharactersInBody
--- validateISBN10 "0-345-81602-B" == Left IllegalCharacterAsCheckDigit
--- validateISBN10 "0-345-81602-3" == Left InvalidCheckDigit
+-- validateISBN10 "0-345-816"     == Left ISBN10InvalidInputLength
+-- validateISBN10 "X-345-81602-1" == Left ISBN10IllegalCharactersInBody
+-- validateISBN10 "0-345-81602-B" == Left ISBN10IllegalCharacterAsCheckDigit
+-- validateISBN10 "0-345-81602-3" == Left ISBN10InvalidCheckDigit
 -- @
 validateISBN10 :: Text -> Either ISBN10ValidationError ISBN
 validateISBN10 input = do
     let inputWithoutHyphens = Text.filter (/= '-') input
 
     unless (Text.length inputWithoutHyphens == 10) $
-        Left InvalidISBN10InputLength
+        Left ISBN10InvalidInputLength
 
     let invalidBodyCharacters = Text.filter (not . isNumericCharacter) (Text.init inputWithoutHyphens)
 
     unless (Text.length invalidBodyCharacters == 0) $
-        Left IllegalCharactersInISBN10Body
+        Left ISBN10IllegalCharactersInBody
 
     unless (isValidISBN10CheckDigit $ Text.last inputWithoutHyphens) $
-        Left IllegalCharacterAsISBN10CheckDigit
+        Left ISBN10IllegalCharacterAsCheckDigit
 
     unless (confirmISBN10CheckDigit inputWithoutHyphens) $
-        Left InvalidISBN10CheckDigit
+        Left ISBN10InvalidCheckDigit
 
     pure $ ISBN10 inputWithoutHyphens
 
@@ -67,10 +67,10 @@ validateISBN10 input = do
 
 -- | Possible validation errors resulting from ISBN-10 validation.
 data ISBN10ValidationError
-    = InvalidISBN10InputLength           -- ^ The length of the input string is not 10 characters, not counting hyphens
-    | IllegalCharactersInISBN10Body      -- ^ The first nine characters of the ISBN-10 input contain non-numeric characters
-    | IllegalCharacterAsISBN10CheckDigit -- ^ The check digit of the ISBN-10 is not a valid character (@0-9@ or @\'X\'@)
-    | InvalidISBN10CheckDigit            -- ^ The check digit is not valid for the given ISBN-10 string
+    = ISBN10InvalidInputLength           -- ^ The length of the input string is not 10 characters, not counting hyphens
+    | ISBN10IllegalCharactersInBody      -- ^ The first nine characters of the ISBN-10 input contain non-numeric characters
+    | ISBN10IllegalCharacterAsCheckDigit -- ^ The check digit of the ISBN-10 is not a valid character (@0-9@ or @\'X\'@)
+    | ISBN10InvalidCheckDigit            -- ^ The check digit is not valid for the given ISBN-10
     deriving (Show, Eq)
 
 
@@ -78,16 +78,16 @@ data ISBN10ValidationError
 renderISBN10ValidationError :: ISBN10ValidationError -> Text
 renderISBN10ValidationError validationError =
     case validationError of
-        InvalidISBN10InputLength ->
+        ISBN10InvalidInputLength ->
             "An ISBN-10 must be 10 characters, not counting hyphens"
 
-        IllegalCharactersInISBN10Body ->
+        ISBN10IllegalCharactersInBody ->
             "The first nine characters of an ISBN-10 must all be numbers"
 
-        IllegalCharacterAsISBN10CheckDigit ->
+        ISBN10IllegalCharacterAsCheckDigit ->
             "The last character of the supplied ISBN-10 must be a number or the letter 'X'"
 
-        InvalidISBN10CheckDigit ->
+        ISBN10InvalidCheckDigit ->
             "The supplied ISBN-10 is not valid"
 
 

@@ -7,16 +7,20 @@ module Data.ISBN
     ( -- * Introduction
       -- $introduction
 
-      ISBN
+      -- * Validating any ISBN
+      ISBN(..)
+    , validateISBN
     , renderISBN
+    , ISBNValidationError(..)
+    , renderISBNValidationError
 
-      -- * ISBN-10
+      -- * Validating only ISBN-10
     , validateISBN10
       -- *** Validation Errors
-    , ISBN10ValidationError(..)
+    , ISBN10ValidationError
     , renderISBN10ValidationError
 
-      -- * ISBN-13
+      -- * Validating only ISBN-13
     , validateISBN13
       -- *** Validation Errors
     , ISBN13ValidationError(..)
@@ -43,14 +47,68 @@ import           Data.Text        as Text
 --
 -- This library contains tools for validating and working with ISBNs.
 
+
 ------------------------------------
+
+
+-- | Used to safely create 'ISBN' values. Assumes that the 'Data.Text.Text'
+-- input is an ISBN-10 or ISBN-13 string, either with or without hyphens.
+--
+-- Will return either a validated ISBN or an 'ISBNValidationError', which can be
+-- rendered as a descriptive string using 'renderISBNValidationError'.
+--
+-- /Examples:/
+--
+-- @
+-- validateISBN "0345816021"        == Right (ISBN10 "0345816021")
+-- validateISBN "0-807-01429-X"     == Right (ISBN10 "080701429X")
+-- validateISBN "9780807014295"     == Right (ISBN13 "9780807014295")
+-- validateISBN "978-0-306-40615-7" == Right (ISBN13 "9780306406157")
+-- validateISBN "0-345-816"         == Left InvalidISBNInputLength
+-- validateISBN "X-345-81602-1"     == Left IllegalCharactersInISBN10Body
+-- validateISBN "0-345-81602-B"     == Left IllegalCharacterAsISBN10CheckDigit
+-- validateISBN "0-345-81602-3"     == Left InvalidISBN10CheckDigit
+-- validateISBN "00000000000000"    == Left InvalidISBNInputLength
+-- validateISBN "9780807014299"     == Left InvalidISBN13CheckDigit
+-- validateISBN "0X00000000000"     == Left IllegalCharactersInISBN13Input
+-- @
+validateISBN :: Text -> Either ISBNValidationError ISBN
+validateISBN isbn = do
+    let isbn10result = validateISBN10 isbn
+        isbn13result = validateISBN13 isbn
+
+    case (isbn10result, isbn13result) of
+        (Right isbn10, _) ->
+            Right isbn10
+
+        (_, Right isbn13) ->
+            Right isbn13
+
+        (Left ISBN10InvalidInputLength, Left ISBN13InvalidInputLength) ->
+            Left InvalidISBNInputLength
+
+        (Left ISBN10IllegalCharactersInBody, _) ->
+            Left IllegalCharactersInISBN10Body
+
+        (Left ISBN10IllegalCharacterAsCheckDigit, _) ->
+            Left IllegalCharacterAsISBN10CheckDigit
+
+        (_ , Left ISBN13IllegalCharactersInInput) ->
+            Left IllegalCharactersInISBN13Input
+
+        (Left ISBN10InvalidCheckDigit, _) ->
+            Left InvalidISBN10CheckDigit
+
+        (_, Left ISBN13InvalidCheckDigit) ->
+            Left InvalidISBN13CheckDigit
+
 
 -- | Convert an 'ISBN' value to a 'Text' string. Useful for displaying an
 -- ISBN in an application interface or for storage in a database. 'ISBN'
 -- values created using 'validateISBN10' or 'validateISBN13' will never
 -- contain hyphens.
 --
--- /Example:/
+-- /Examples:/
 --
 -- @
 -- renderISBN (ISBN10 "080701429X")    == "080701429X"
@@ -59,6 +117,43 @@ import           Data.Text        as Text
 renderISBN :: ISBN -> Text
 renderISBN (ISBN10 i) = i
 renderISBN (ISBN13 i) = i
+
+
+-- | Possible validation errors resulting from ISBN validation.
+data ISBNValidationError
+    = InvalidISBNInputLength             -- ^ The length of the input string is not 10 or 13 characters, not counting hyphens
+    | IllegalCharactersInISBN10Body      -- ^ The first nine characters of the ISBN-10 input contain non-numeric characters
+    | IllegalCharactersInISBN13Input     -- ^ The ISBN-13 input contains non-numeric characters
+    | IllegalCharacterAsISBN10CheckDigit -- ^ The check digit of the ISBN-10 is not a valid character (@0-9@ or @\'X\'@)
+    | InvalidISBN10CheckDigit            -- ^ The check digit is not valid for the given ISBN-10
+    | InvalidISBN13CheckDigit            -- ^ The check digit is not valid for the given ISBN-13
+    deriving (Show, Eq)
+
+
+
+-- | Convert an 'ISBNValidationError' into a human-friendly error message.
+renderISBNValidationError :: ISBNValidationError -> Text
+renderISBNValidationError validationError =
+    case validationError of
+        InvalidISBNInputLength ->
+            "ISBNs must be 10 or 13 characters, not counting hyphens"
+
+        IllegalCharactersInISBN10Body ->
+            "The first nine characters of an ISBN-10 must all be numbers"
+
+        IllegalCharactersInISBN13Input ->
+            "Every non-hyphen character of an ISBN-13 must be a number"
+
+        IllegalCharacterAsISBN10CheckDigit ->
+            "The last character of the supplied ISBN-10 must be a number or the letter 'X'"
+
+        InvalidISBN10CheckDigit ->
+            "The supplied ISBN-10 is not valid"
+
+        InvalidISBN13CheckDigit ->
+            "The supplied ISBN-13 is not valid"
+
+
 
 
 -- $conversion

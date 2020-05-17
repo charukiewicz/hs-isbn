@@ -19,20 +19,39 @@ import           Data.ISBN.Types
 
 
 
+-- | Used to safely create 'ISBN13' values represented by the 'ISBN' data type.
+-- Assumes that the 'Data.Text.Text' input is an ISBN-13 string, either with or
+-- without hyphens.
+--
+-- Will return either a validated ISBN-13 or an 'ISBN13ValidationError', which can be
+-- rendered as a descriptive string using 'renderISBN13ValidationError'.
+--
+-- /Examples:/
+--
+-- @
+-- validateISBN13 "9780345816023"     == Right (ISBN13 "9780345816023")
+-- validateISBN13 "9780807014295"     == Right (ISBN13 "9780807014295")
+-- validateISBN13 "9780306406157"     == Right (ISBN13 "9780306406157")
+-- validateISBN13 "978-0-306-40615-7" == Right (ISBN13 "9780306406157")
+-- validateISBN13 "9780345816029"     == Left ISBN13InvalidCheckDigit
+-- validateISBN13 "9780807014299"     == Left ISBN13InvalidCheckDigit
+-- validateISBN13 "00000000000000"    == Left ISBN13InvalidInputLength
+-- validateISBN13 "0X00000000000"     == Left ISBN13IllegalCharactersInInput
+-- @
 validateISBN13 :: Text -> Either ISBN13ValidationError ISBN
 validateISBN13 input = do
     let inputWithoutHyphens = Text.filter (/= '-') input
 
     unless (Text.length inputWithoutHyphens == 13) $
-        Left InvalidISBN13InputLength
+        Left ISBN13InvalidInputLength
 
     let illegalCharacters = Text.filter (not . isNumericCharacter) inputWithoutHyphens
 
     unless (Text.length illegalCharacters == 0) $
-        Left IllegalCharactersInISBN13Input
+        Left ISBN13IllegalCharactersInInput
 
     unless (confirmISBN13CheckDigit inputWithoutHyphens) $
-        Left InvalidISBN13CheckDigit
+        Left ISBN13InvalidCheckDigit
 
     pure $ ISBN13 inputWithoutHyphens
 
@@ -40,22 +59,22 @@ validateISBN13 input = do
 
 -- | Possible validation errors resulting from ISBN-13 validation.
 data ISBN13ValidationError
-    = InvalidISBN13InputLength       -- ^ The length of the input string is not 13 characters, not counting hyphens
-    | IllegalCharactersInISBN13Input -- ^ The ISBN-13 input contains non-numeric characters
-    | InvalidISBN13CheckDigit        -- ^ The check digit is not valid for the given ISBN-13
+    = ISBN13InvalidInputLength       -- ^ The length of the input string is not 13 characters, not counting hyphens
+    | ISBN13IllegalCharactersInInput -- ^ The ISBN-13 input contains non-numeric characters
+    | ISBN13InvalidCheckDigit        -- ^ The check digit is not valid for the given ISBN-13
     deriving (Show, Eq)
 
 -- | Convert an 'ISBN10ValidationError' into a human-friendly error message.
 renderISBN13ValidationError :: ISBN13ValidationError -> Text
 renderISBN13ValidationError validationError =
     case validationError of
-        InvalidISBN13InputLength ->
+        ISBN13InvalidInputLength ->
             "An ISBN-13 must be 13 characters, not counting hyphens"
 
-        IllegalCharactersInISBN13Input ->
+        ISBN13IllegalCharactersInInput ->
             "Every non-hyphen character of an ISBN-13 must be a number"
 
-        InvalidISBN13CheckDigit ->
+        ISBN13InvalidCheckDigit ->
             "The supplied ISBN-13 is not valid"
 
 
