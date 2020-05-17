@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.ISBN.ISBN13
-    ( ISBN
+    ( ISBN(..)
     , validateISBN13
     , renderISBN13ValidationError
     , ISBN13ValidationError(..)
@@ -15,7 +15,7 @@ import           Control.Monad
 import           Data.Char
 import           Data.Text       as Text
 
-import           Data.ISBN.Types
+import           Data.ISBN.Types ( ISBN (ISBN13) )
 
 
 
@@ -108,6 +108,6 @@ numericValueToISBN13Char c = Text.head $ pack $ show c
 
 
 
--- | Allows for the generation of 'ISBN13' values without any validation.
+-- | Will create an 'ISBN13' value without any validation.
 unsafeToISBN13 :: Text -> ISBN
 unsafeToISBN13 = ISBN13

@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.ISBN.ISBN10
-    ( ISBN
+    ( ISBN(..)
     , validateISBN10
       -- * Validation Errors
     , ISBN10ValidationError(..)
@@ -21,7 +21,7 @@ import           Control.Monad
 import           Data.Char
 import           Data.Text       as Text
 
-import           Data.ISBN.Types
+import           Data.ISBN.Types ( ISBN (ISBN10) )
 
 
 
@@ -153,6 +153,6 @@ isNumericCharacter :: Char -> Bool
 isNumericCharacter char = char `elem` ("1234567890" :: String)
 
 
--- | Allows for the generation of 'ISBN10' values without any validation.
+-- | Will create an 'ISBN10' value without any validation.
 unsafeToISBN10 :: Text -> ISBN
 unsafeToISBN10 = ISBN10

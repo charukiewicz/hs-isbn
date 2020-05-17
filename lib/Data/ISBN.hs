@@ -7,22 +7,24 @@ module Data.ISBN
     ( -- * Introduction
       -- $introduction
 
-      -- * Validating any ISBN
+      -- * Documentation
       ISBN(..)
-    , validateISBN
     , renderISBN
+      -- * ISBN Validation
+    , validateISBN
+      -- *** ISBN Validation Errors
     , ISBNValidationError(..)
     , renderISBNValidationError
 
       -- * Validating only ISBN-10
     , validateISBN10
-      -- *** Validation Errors
+      -- *** ISBN-13 Validation Errors
     , ISBN10ValidationError
     , renderISBN10ValidationError
 
       -- * Validating only ISBN-13
     , validateISBN13
-      -- *** Validation Errors
+      -- *** ISBN-10 Validation Errors
     , ISBN13ValidationError(..)
     , renderISBN13ValidationError
 
@@ -30,7 +32,7 @@ module Data.ISBN
       -- $conversion
     , convertISBN10toISBN13
     , convertISBN13toISBN10
-      -- * Unsafe Creation
+      -- * Creating ISBN values without validation
       -- $unsafe
     , unsafeToISBN10
     , unsafeToISBN13
@@ -54,7 +56,7 @@ import           Data.Text        as Text
 -- | Used to safely create 'ISBN' values. Assumes that the 'Data.Text.Text'
 -- input is an ISBN-10 or ISBN-13 string, either with or without hyphens.
 --
--- Will return either a validated ISBN or an 'ISBNValidationError', which can be
+-- Will return either a validated @ISBN@ or an 'ISBNValidationError', which can be
 -- rendered as a descriptive string using 'renderISBNValidationError'.
 --
 -- /Examples:/
@@ -103,10 +105,12 @@ validateISBN isbn = do
             Left InvalidISBN13CheckDigit
 
 
--- | Convert an 'ISBN' value to a 'Text' string. Useful for displaying an
--- ISBN in an application interface or for storage in a database. 'ISBN'
--- values created using 'validateISBN10' or 'validateISBN13' will never
--- contain hyphens.
+-- | Convert an 'ISBN' value to a 'Text' string. Can be used when displaying an
+-- ISBN in an application interface or before storing the plain ISBN text values
+-- in a database.
+--
+-- 'ISBN' values created using 'validateISBN', 'validateISBN10', or
+-- 'validateISBN13' will never contain hyphens.
 --
 -- /Examples:/
 --
@@ -119,7 +123,8 @@ renderISBN (ISBN10 i) = i
 renderISBN (ISBN13 i) = i
 
 
--- | Possible validation errors resulting from ISBN validation.
+-- | Possible validation errors resulting from ISBN validation. Can be
+-- rendered as a descriptive error message using 'renderISBNValidationError'.
 data ISBNValidationError
     = InvalidISBNInputLength             -- ^ The length of the input string is not 10 or 13 characters, not counting hyphens
     | IllegalCharactersInISBN10Body      -- ^ The first nine characters of the ISBN-10 input contain non-numeric characters
@@ -139,13 +144,13 @@ renderISBNValidationError validationError =
             "ISBNs must be 10 or 13 characters, not counting hyphens"
 
         IllegalCharactersInISBN10Body ->
-            "The first nine characters of an ISBN-10 must all be numbers"
+            "The first nine non-hypen characters of an ISBN-10 must all be numbers"
 
         IllegalCharactersInISBN13Input ->
             "Every non-hyphen character of an ISBN-13 must be a number"
 
         IllegalCharacterAsISBN10CheckDigit ->
-            "The last character of the supplied ISBN-10 must be a number or the letter 'X'"
+            "The last character of an ISBN-10 must be a number or the letter 'X'"
 
         InvalidISBN10CheckDigit ->
             "The supplied ISBN-10 is not valid"
@@ -180,6 +185,12 @@ convertISBN10toISBN13 isbn10 =
 
 -- | Convert an ISBN-13 to an ISBN-10. Since only ISBN-13s starting with '978'
 -- can be converted, this operation may fail.
+--
+-- /Example:/
+--
+-- @
+-- convertISBN13toISBN10 (ISBN13 "9780060899226") == Just (ISBN10 "0060899220")
+-- @
 convertISBN13toISBN10 :: ISBN -> Maybe ISBN
 convertISBN13toISBN10 isbn13 = do
     let isbn13Text = renderISBN isbn13
@@ -193,8 +204,10 @@ convertISBN13toISBN10 isbn13 = do
 
 -- $unsafe
 --
--- In most cases, producing 'ISBN10' and 'ISBN13' values should be done using
--- the 'validateISBN10' and 'validateISBN13' functions, which ensure the values
--- they produce are valid. The functions below allow for the unsafe creation of
--- ISBN values. They should only be used in special cases. For example, there
--- have been several instances of books published with an invalid ISBN-10.
+-- In most cases, creating 'ISBN10' and 'ISBN13' values should be performed
+-- using the 'validateISBN', 'validateISBN10', or 'validateISBN13' functions,
+-- which ensure the ISBN values they produce are valid.
+--
+-- The functions below allow for the creation of ISBN values without any
+-- validation. They should only be used in specific cases. For example, when
+-- loading already-validated ISBN values stored in a text column in a database.
