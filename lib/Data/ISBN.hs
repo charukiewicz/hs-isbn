@@ -40,7 +40,6 @@ module Data.ISBN
 
 import           Data.ISBN.ISBN10
 import           Data.ISBN.ISBN13
-import           Data.ISBN.Types  ( ISBN (..) )
 
 import           Control.Monad
 import           Data.Text        as Text
