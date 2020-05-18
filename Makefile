@@ -5,11 +5,11 @@ help: ## Print help documentation
 	@grep -E '^[.a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "$(COLOR_GREEN)%-30s$(COLOR_DEFAULT) %s\n", $$1, $$2}'
 
 tests: ## Run the tests with cabal
-	@cabal test
+	@cabal test --flags=dev
 
 tests-watch: ## Run the tests with ghcid, re-running each time the source files change
 	ghcid \
-		--command="cabal repl --repl-options=-ilib --repl-options=-itest isbn:isbn-test" \
+		--command="cabal repl --flags=dev --repl-options=-ilib --repl-options=-itest isbn:isbn-test" \
 		--reload="lib" \
 		--test="Main.main"
 
@@ -22,6 +22,18 @@ docs-watch: ## Regenerate the docs each time the source files change
 clean: ## Clear all build artifacts
 	@rm -rf dist-newstyle
 	@rm -rf dist
+
+BUILD_TMP_DIR=build-tmp
+BUILD_DIR=build
+hackage-build: ## Build the package and documentation for Hackage
+	@mkdir -p $(BUILD_TMP_DIR)
+	@rm -rf $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR)
+	@cabal sdist --builddir=$(BUILD_TMP_DIR)
+	@cabal haddock --builddir=$(BUILD_TMP_DIR)/sdist --haddock-for-hackage --enable-documentation
+	@mv $(BUILD_TMP_DIR)/sdist/*.tar.gz build/
+	@rm -rf $(BUILD_TMP_DIR)
+	@echo "Done building package and documentation!"
 
 
 ## Shell color codes

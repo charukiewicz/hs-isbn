@@ -1,6 +1,7 @@
 # Haskell
 dist*
 dist-*
+build*
 **/static/tmp/
 **/static/combined/
 **/client_session_key.aes
