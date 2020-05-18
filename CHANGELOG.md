@@ -1,4 +1,4 @@
-# Revision history for `hs-isbn`
+# Revision history for `isbn`
 
 ## 1.0.0.0 - May 17, 2020
 

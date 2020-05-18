@@ -1,4 +1,4 @@
-hs-isbn: A Library for ISBN Validation
+isbn: ISBN Validation and Manipulation
 ======================================
 
 All books published by major publishers since 1970 have an International Standard Book Number (ISBN) associated with them. Prior to 2007, all ISBNs issued were ten digit ISBN-10 format. Since 2007, new ISBNs have been issued in the thirteen digit ISBN-13 format. See the [ISBN Wikipedia article](https://en.wikipedia.org/wiki/International_Standard_Book_Number) for more information.

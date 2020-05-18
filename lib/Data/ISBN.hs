@@ -46,7 +46,16 @@ import           Data.Text        as Text
 
 -- $introduction
 --
--- This library contains tools for validating and working with ISBNs.
+-- This library contains tools for validating and working with
+-- [International Standard Book Numbers (ISBNs)](https://en.wikipedia.org/wiki/International_Standard_Book_Number).
+-- An ISBN value can be in either the format of a ten digit ISBN-10 or a
+-- thirteen digit ISBN-13. This library uses a single 'ISBN' data type with two
+-- value constructors to represent ISBN values, so that a single entry point can
+-- be used to validate text inputs as either an 'ISBN10', 'ISBN13', or neither.
+--
+-- For most users, importing only the @Data.ISBN@ module is necessary, as this
+-- module re-exports all of the data types and functions necessary for
+-- validating, creating, and converting between ISBN values.
 
 
 ------------------------------------
