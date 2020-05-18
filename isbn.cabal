@@ -1,7 +1,7 @@
 cabal-version:       2.4
 
 name:                isbn
-version:             0.1.0.0
+version:             1.0.0.0
 synopsis:            Library for ISBN validation
 description:         See the README at <https://github.com/charukiewicz/hs-isbn#readme>
 homepage:            https://github.com/charukiewicz/hs-isbn
@@ -12,7 +12,9 @@ author:              Christian Charukiewicz
 maintainer:          c.charukiewicz@gmail.com
 copyright:           2020 Christian Charukiewicz
 category:            Data
-extra-source-files:  CHANGELOG.md
+extra-doc-files:
+    CHANGELOG.md
+    README.md
 
 
 source-repository head

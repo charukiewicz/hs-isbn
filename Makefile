@@ -22,6 +22,7 @@ docs-watch: ## Regenerate the docs each time the source files change
 clean: ## Clear all build artifacts
 	@rm -rf dist-newstyle
 	@rm -rf dist
+	@rm -rf build
 
 BUILD_TMP_DIR=build-tmp
 BUILD_DIR=build

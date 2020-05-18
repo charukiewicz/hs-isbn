@@ -1,6 +1,6 @@
-# Revision history for isbn
+# Revision history for `hs-isbn`
 
-## 0.1.0.0 -- 2020-05-17
+## 1.0.0.0 - May 17, 2020
 
 - Initial release. Features:
   - General ISBN validation based off of text input, as well as specific ISBN-10 or ISBN-13 validation
