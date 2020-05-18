@@ -1,37 +1,28 @@
-.PHONY: help test ghcid-test ghcid-cabal docs clean
+.PHONY: help tests tests-watch docs docs-watch clean
 
 # 'help' target originally taken from: https://github.com/parsonsmatt/servant-persistent
 help: ## Print help documentation
 	@grep -E '^[.a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "$(COLOR_GREEN)%-30s$(COLOR_DEFAULT) %s\n", $$1, $$2}'
 
-test: ## Run the tests with cabal
+tests: ## Run the tests with cabal
 	@cabal test
 
-docs: ## Generate the Haddock documentation
-	@cabal haddock
-
-ghcid-test: $(OBJECT_DIR) ## Run the tests with ghcid
-	ghcid \
-		--command="ghci -fobject-code -odir $(OBJECT_DIR) -hidir $(OBJECT_DIR) -O0 -ilib -itest test/Spec.hs" \
-		--reload="lib" \
-		--test="Main.main"
-
-ghcid-cabal: $(OBJECT_DIR) ## Run the tests with ghcid
+tests-watch: ## Run the tests with ghcid, re-running each time the source files change
 	ghcid \
 		--command="cabal repl --repl-options=-ilib --repl-options=-itest isbn:isbn-test" \
 		--reload="lib" \
 		--test="Main.main"
 
+docs: ## Generate the Haddock documentation
+	@cabal haddock
+
+docs-watch: ## Regenerate the docs each time the source files change
+	@find lib/ -name "*.hs" | entr cabal haddock
+
 clean: ## Clear all build artifacts
 	@rm -rf dist-newstyle
 	@rm -rf dist
-	@rm -rf $(OBJECT_DIR)
 
-
-OBJECT_DIR=.ghci-build-artifacts
-
-$(OBJECT_DIR): 
-	@mkdir $@
 
 ## Shell color codes
 

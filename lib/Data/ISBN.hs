@@ -140,10 +140,10 @@ renderISBNValidationError :: ISBNValidationError -> Text
 renderISBNValidationError validationError =
     case validationError of
         InvalidISBNInputLength ->
-            "ISBNs must be 10 or 13 characters, not counting hyphens"
+            "An ISBN must be 10 or 13 characters, not counting hyphens"
 
         IllegalCharactersInISBN10Body ->
-            "The first nine non-hypen characters of an ISBN-10 must all be numbers"
+            "The first nine non-hyphen characters of an ISBN-10 must all be numbers"
 
         IllegalCharactersInISBN13Input ->
             "Every non-hyphen character of an ISBN-13 must be a number"
