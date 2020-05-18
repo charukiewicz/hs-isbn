@@ -1,5 +1,5 @@
-ISBN Validation & Tools
-=======================
+hs-isbn: A Library for ISBN Validation
+======================================
 
 All books published by major publishers since 1970 have an International Standard Book Number (ISBN) associated with them. Prior to 2007, all ISBNs issued were ten digit ISBN-10 format. Since 2007, new ISBNs have been issued in the thirteen digit ISBN-13 format. See the [ISBN Wikipedia article](https://en.wikipedia.org/wiki/International_Standard_Book_Number) for more information.
 
@@ -7,7 +7,7 @@ All books published by major publishers since 1970 have an International Standar
 
 This library provides data types and functions both validating and working with ISBNs. For general use, only importing the `Data.ISBN` module is required, as it reexports all functionality for validating and converting between ISBN-10 and ISBN-13 values. The specific implementations for validation are located in the `Data.ISBN.ISBN10` and `Data.ISBN.ISBN13` modules, respectively.
 
-### Usage Example: Validating an ISBN and printing the error
+## Usage Example: Validating an ISBN and printing the error
 
 ```haskell
 import Data.ISBN (ISBN, validateISBN, renderISBNValidationError)
@@ -18,16 +18,16 @@ validateUserSuppliedISBN userIsbnInput =
 
 
 someValidISBN10 =
-    validateUserSuppliedISBN "0345816021"      -- Right (ISBN10 "0345816021")
+    validateUserSuppliedISBN "0345816021"    -- Right (ISBN10 "0345816021")
 
 someValidISBN13 =
-    validateUserSuppliedISBN "9780807014295"   -- Right (ISBN13 "9780807014295")
+    validateUserSuppliedISBN "9780807014295" -- Right (ISBN13 "9780807014295")
 
 tooShortISBN =
-    validateUserSuppliedISBN "0-345-816"       -- Left "An ISBN must be 10 or 13 characters, not counting hyphens"
+    validateUserSuppliedISBN "0-345-816"     -- Left "An ISBN must be 10 or 13 characters, not counting hyphens"
 
 invalidISBN10 =
-    validateUserSuppliedISBN "0-345-81602-3"   -- Left "The supplied ISBN-10 is not valid"
+    validateUserSuppliedISBN "0-345-81602-3" -- Left "The supplied ISBN-10 is not valid"
 ```
 
 
