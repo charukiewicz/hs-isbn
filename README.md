@@ -33,7 +33,7 @@ invalidISBN10 =
 
 ## Development
 
-This library is developed using a [Nix](https://nixos.org/nix/) shell. The environment is specified in `shell.nix`. You can enter the environment with `nix` installed via `nix-shell`. The `nix-shell` will install sandboxed copies of `cabal-install`, `ghcid`, `entr`, and `cmake`, which are the utilities necessary to build the project, run the tests, and create a local copy of the documentation.
+This library is developed using a [Nix](https://nixos.org/nix/) shell. The environment is specified in `shell.nix`. You can enter the environment with `nix` installed via `nix-shell`. The `nix-shell` will install sandboxed copies of `cabal-install`, `ghcid`, `entr`, and `gnumake`, which are the utilities necessary to build the project, run the tests, and create a local copy of the documentation.
 
 #### Entering the development environment and runnning tests
 

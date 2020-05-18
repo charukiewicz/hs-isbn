@@ -15,7 +15,7 @@ let
       pkgs.ghcid
 
       # Necessary for the `make` utility
-      pkgs.cmake
+      pkgs.gnumake
 
       # Used to watch the source files and re-run the
       # Haddock docs build each time they change
