@@ -3,11 +3,14 @@
 module Data.ISBN.ISBN13
     ( ISBN(..)
     , validateISBN13
+      -- * Validation Errors
     , renderISBN13ValidationError
     , ISBN13ValidationError(..)
+      -- * Helpers
     , confirmISBN13CheckDigit
     , calculateISBN13CheckDigitValue
     , numericValueToISBN13Char
+      -- * Unsafe Coercion
     , unsafeToISBN13
     ) where
 
@@ -64,7 +67,7 @@ data ISBN13ValidationError
     | ISBN13InvalidCheckDigit        -- ^ The check digit is not valid for the given ISBN-13
     deriving (Show, Eq)
 
--- | Convert an 'ISBN10ValidationError' into a human-friendly error message.
+-- | Convert an 'ISBN13ValidationError' into a human-friendly error message.
 renderISBN13ValidationError :: ISBN13ValidationError -> Text
 renderISBN13ValidationError validationError =
     case validationError of
@@ -82,10 +85,32 @@ renderISBN13ValidationError validationError =
 isNumericCharacter :: Char -> Bool
 isNumericCharacter char = char `elem` ("1234567890" :: String)
 
+-- | Confirms that the check digit of an ISBN-13 is correct. Assumes that the
+-- input consists of 12 numeric characters followed by a legal check digit
+-- character (@0-9@).
+--
+-- /Examples:/
+--
+-- @
+-- confirmISBN13CheckDigit "9780306406157" == True
+-- confirmISBN13CheckDigit "9780345816029" == False
+-- @
 confirmISBN13CheckDigit :: Text -> Bool
 confirmISBN13CheckDigit isbn13 =
     calculateISBN13CheckDigitValue (Text.init isbn13) == isbn13CharToNumericValue (Text.last isbn13)
 
+-- | Calculates an ISBN-13 check digit value using the standard check digit
+-- calculation formula. Assumes that the input is 12 numeric characters. The
+-- check digit value will be a number from 0 to 9.
+--
+-- See: <https://en.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-13_check_digit_calculation>
+--
+-- /Examples:/
+--
+-- @
+-- calculateISBN13CheckDigitValue "978030640615" == 7
+-- calculateISBN13CheckDigitValue "978151915024" == 0
+-- @
 calculateISBN13CheckDigitValue :: Text -> Int
 calculateISBN13CheckDigitValue input =
     go 1 (unpack input) 0

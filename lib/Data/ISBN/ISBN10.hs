@@ -108,8 +108,8 @@ confirmISBN10CheckDigit isbn10 =
 
 -- | Calculates an ISBN-10 check digit value using the standard check digit
 -- calculation formula. Assumes that the input is 9 numeric characters. The
--- check digit value value can be any number in the range 0 to 10, the last
--- of which is represented by the symbol \'X\' in an ISBN-10.
+-- check digit value can be any number in the range 0 to 10, the last of
+-- which is represented by the symbol \'X\' in an ISBN-10.
 --
 -- See: <https://en.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-10_check_digits>
 --

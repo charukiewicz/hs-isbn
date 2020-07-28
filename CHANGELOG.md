@@ -1,5 +1,10 @@
 # Revision history for `isbn`
 
+## 1.1.0.0 - July 28, 2020
+
+- Changed exports in `Data.ISBN` module to not export the constructors of the `ISBN` data type.
+  - Added note that if constructors are needed, the `Data.Types.ISBN` module can be imported.
+
 ## 1.0.0.0 - May 17, 2020
 
 - Initial release. Features:

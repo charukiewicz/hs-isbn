@@ -8,7 +8,8 @@ module Data.ISBN
       -- $introduction
 
       -- * Documentation
-      ISBN(..)
+      ISBN
+      -- $isbn-import
     , renderISBN
       -- * ISBN Validation
     , validateISBN
@@ -56,6 +57,14 @@ import           Data.Text        as Text
 -- For most users, importing only the @Data.ISBN@ module is necessary, as this
 -- module re-exports all of the data types and functions necessary for
 -- validating, creating, and converting between ISBN values.
+
+
+------------------------------------
+
+-- $isbn-import
+--
+-- __NOTE:__ This module does not export the constructors in the @ISBN@ type.
+-- For access to the constructors, import the @Data.Types.ISBN@ module.
 
 
 ------------------------------------
@@ -180,7 +189,7 @@ renderISBNValidationError validationError =
 -- /Example:/
 --
 -- @
--- convertISBN10toISBN13 (ISBN10 "0060899220") == ISBN13 "9780060899226"
+-- convertISBN10toISBN13 (unsafeToISBN10 "0060899220") == ISBN13 "9780060899226"
 -- @
 convertISBN10toISBN13 :: ISBN -> ISBN
 convertISBN10toISBN13 isbn10 =
@@ -197,7 +206,7 @@ convertISBN10toISBN13 isbn10 =
 -- /Example:/
 --
 -- @
--- convertISBN13toISBN10 (ISBN13 "9780060899226") == Just (ISBN10 "0060899220")
+-- convertISBN13toISBN10 (unsafeToISBN13 "9780060899226") == Just (ISBN10 "0060899220")
 -- @
 convertISBN13toISBN10 :: ISBN -> Maybe ISBN
 convertISBN13toISBN10 isbn13 = do

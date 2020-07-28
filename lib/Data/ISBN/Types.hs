@@ -10,10 +10,9 @@ import           Data.Text
 -- The 'Data.ISBN.validateISBN10' and 'Data.ISBN.validateISBN13' functions can
 -- also be used to only attempt to create ISBNs of a specific type.
 --
--- When importing this data type, it is recommended not expose the
--- constructors, and instead use 'Data.ISBN.unsafeToISBN10' or
--- 'Data.ISBN.unsafeToISBN13' to coerce 'Data.Text.Text' values into 'ISBN'
--- values.
+-- To create @ISBN@ values without validation, use the 'Data.ISBN.unsafeToISBN10'
+-- and 'Data.ISBN.unsafeToISBN13' functions to coerce 'Data.Text.Text' values
+-- into 'ISBN' values.
 data ISBN
     = ISBN10 Text -- ^ An ISBN-10 value. Consists of 9 digits followed by a base-11 check digit (@0-9@ or @\'X\'@).
     | ISBN13 Text -- ^ An ISBN-13 value. Consists of 12 digits followed by a base-10 check digit (@0-9@).
