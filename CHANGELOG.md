@@ -2,8 +2,9 @@
 
 ## 1.1.0.0 - July 28, 2020
 
-- Changed exports in `Data.ISBN` module to not export the constructors of the `ISBN` data type.
-  - Added note that if constructors are needed, the `Data.Types.ISBN` module can be imported.
+- Changed exports in `Data.ISBN` module to not export the constructors of the `ISBN` data type
+  - If constructors are needed, the `Data.Types.ISBN` module can be imported instead
+- Added `isISBN10` and `isISBN13` functions to allow for checking of the opaque `ISBN` data type without the use of its value constructors
 
 ## 1.0.0.0 - May 17, 2020
 

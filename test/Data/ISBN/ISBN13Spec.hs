@@ -2,6 +2,7 @@
 
 module Data.ISBN.ISBN13Spec (spec) where
 
+import           Data.ISBN.ISBN10 ( unsafeToISBN10 )
 import           Data.ISBN.ISBN13
 
 import           Data.List        ( concat )
@@ -31,6 +32,22 @@ spec = do
         test_confirmISBN13CheckDigit "9780345816023" True
         test_confirmISBN13CheckDigit "9780345816029" False
         test_confirmISBN13CheckDigit "9780807014295" True
+
+    describe "Testing ISBN-13 checking" $ do
+        let test_isISBN13 isbn13Val expecting =
+              it (concat
+                    [ "can equate: isISBN13 ("
+                    , show isbn13Val
+                    , ")"
+                    , spacer isbn13Val
+                    , " == "
+                    , show expecting
+                    ]) $
+                  isISBN13 isbn13Val `shouldBe` expecting
+            spacer val = take (22 - (length $ show val)) $ cycle " "
+
+        test_isISBN13 (unsafeToISBN10 "0345816021") False
+        test_isISBN13 (unsafeToISBN13 "9780345816023") True
 
     describe "Testing ISBN-13 validation with errors" $ do
         let test_validateISBN13 isbn13 expecting =

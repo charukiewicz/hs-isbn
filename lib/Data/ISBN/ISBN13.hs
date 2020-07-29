@@ -10,6 +10,7 @@ module Data.ISBN.ISBN13
     , confirmISBN13CheckDigit
     , calculateISBN13CheckDigitValue
     , numericValueToISBN13Char
+    , isISBN13
       -- * Unsafe Coercion
     , unsafeToISBN13
     ) where
@@ -131,6 +132,17 @@ isbn13CharToNumericValue = digitToInt
 numericValueToISBN13Char :: Int -> Char
 numericValueToISBN13Char c = Text.head $ pack $ show c
 
+-- | Determines whether an 'ISBN' value is an ISBN-13.
+--
+-- /Examples:/
+--
+-- @
+-- isISBN13 (unsafeToISBN10 "0060899220")    == False
+-- isISBN13 (unsafeToISBN13 "9780060899226") == True
+-- @
+isISBN13 :: ISBN -> Bool
+isISBN13 (ISBN13 _) = True
+isISBN13 _          = False
 
 
 -- | Will create an 'ISBN13' value without any validation.

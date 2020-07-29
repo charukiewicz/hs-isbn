@@ -9,7 +9,7 @@ bug-reports:         https://github.com/charukiewicz/hs-isbn/issues
 license:             Apache-2.0
 license-file:        LICENSE
 author:              Christian Charukiewicz
-maintainer:          c.charukiewicz@gmail.com
+maintainer:          charukiewicz@protonmail.com
 copyright:           © 2020 Christian Charukiewicz
 category:            Data
 extra-doc-files:

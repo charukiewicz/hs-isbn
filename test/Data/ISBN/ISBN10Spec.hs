@@ -3,6 +3,7 @@
 module Data.ISBN.ISBN10Spec (spec) where
 
 import           Data.ISBN.ISBN10
+import           Data.ISBN.ISBN13 ( unsafeToISBN13 )
 
 import           Data.Text        ( pack )
 import           Test.Hspec
@@ -50,6 +51,22 @@ spec = do
         test_confirmISBN10CheckDigit "4444444444" True
         test_confirmISBN10CheckDigit "9999999999" True
         test_confirmISBN10CheckDigit "999999999X" False
+
+    describe "Testing ISBN-10 checking" $ do
+        let test_isISBN10 isbn10Val expecting =
+              it (concat
+                    [ "can equate: isISBN10 ("
+                    , show isbn10Val
+                    , ")"
+                    , spacer isbn10Val
+                    , " == "
+                    , show expecting
+                    ]) $
+                  isISBN10 isbn10Val `shouldBe` expecting
+            spacer val = take (22 - (length $ show val)) $ cycle " "
+
+        test_isISBN10 (unsafeToISBN10 "0345816021") True
+        test_isISBN10 (unsafeToISBN13 "9780345816023") False
 
     describe "Testing ISBN-10 validation with errors" $ do
         let test_validateISBN10 isbn10 expecting =

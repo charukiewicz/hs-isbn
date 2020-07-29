@@ -33,6 +33,9 @@ module Data.ISBN
       -- $conversion
     , convertISBN10toISBN13
     , convertISBN13toISBN10
+      -- * ISBN Helpers
+    , isISBN10
+    , isISBN13
       -- * Creating ISBN values without validation
       -- $unsafe
     , unsafeToISBN10

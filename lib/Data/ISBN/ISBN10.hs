@@ -13,6 +13,7 @@ module Data.ISBN.ISBN10
     , numericValueToISBN10Char
     , isValidISBN10CheckDigit
     , isNumericCharacter
+    , isISBN10
       -- * Unsafe Coercion
     , unsafeToISBN10
     ) where
@@ -151,6 +152,18 @@ isValidISBN10CheckDigit char = char `elem` ("1234567890X" :: String)
 -- | Determines whether a character is numeric (e.g. in the range of @0-9@).
 isNumericCharacter :: Char -> Bool
 isNumericCharacter char = char `elem` ("1234567890" :: String)
+
+-- | Determines whether an 'ISBN' value is an ISBN-10.
+--
+-- /Examples:/
+--
+-- @
+-- isISBN10 (unsafeToISBN10 "0060899220")    == True
+-- isISBN10 (unsafeToISBN13 "9780060899226") == False
+-- @
+isISBN10 :: ISBN -> Bool
+isISBN10 (ISBN10 _) = True
+isISBN10 _          = False
 
 
 -- | Will create an 'ISBN10' value without any validation.
