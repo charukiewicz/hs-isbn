@@ -163,6 +163,8 @@ isNumericCharacter char = char `elem` ("1234567890" :: String)
 -- isISBN10 (unsafeToISBN10 "0060899220")    == True
 -- isISBN10 (unsafeToISBN13 "9780060899226") == False
 -- @
+--
+-- /Since: 1.1.0.0/
 isISBN10 :: ISBN -> Bool
 isISBN10 (ISBN10 _) = True
 isISBN10 _          = False

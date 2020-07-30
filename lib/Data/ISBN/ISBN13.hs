@@ -142,6 +142,8 @@ numericValueToISBN13Char c = Text.head $ pack $ show c
 -- isISBN13 (unsafeToISBN10 "0060899220")    == False
 -- isISBN13 (unsafeToISBN13 "9780060899226") == True
 -- @
+--
+-- /Since: 1.1.0.0/
 isISBN13 :: ISBN -> Bool
 isISBN13 (ISBN13 _) = True
 isISBN13 _          = False
