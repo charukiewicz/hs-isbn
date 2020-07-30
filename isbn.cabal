@@ -1,7 +1,7 @@
 cabal-version:       2.4
 
 name:                isbn
-version:             1.1.0.0
+version:             1.1.0.1
 synopsis:            ISBN Validation and Manipulation
 description:         See the README at <https://github.com/charukiewicz/hs-isbn#readme>
 homepage:            https://github.com/charukiewicz/hs-isbn

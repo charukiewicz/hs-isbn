@@ -31,6 +31,7 @@ spec = do
         test_validateISBN "0-807-01429-X"     (Right (unsafeToISBN10 "080701429X"))
         test_validateISBN "9780807014295"     (Right (unsafeToISBN13 "9780807014295"))
         test_validateISBN "978-0-306-40615-7" (Right (unsafeToISBN13 "9780306406157"))
+        test_validateISBN "979-10-95546-00-9" (Right (unsafeToISBN13 "9791095546009"))
         test_validateISBN "0-345-816"         (Left InvalidISBNInputLength)
         test_validateISBN "X-345-81602-1"     (Left IllegalCharactersInISBN10Body)
         test_validateISBN "0-345-81602-B"     (Left IllegalCharacterAsISBN10CheckDigit)

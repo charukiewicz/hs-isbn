@@ -22,6 +22,7 @@ spec = do
         test_calculateISBN13CheckDigitValue "978034581602" 3
         test_calculateISBN13CheckDigitValue "978080701429" 5
         test_calculateISBN13CheckDigitValue "978151915024" 0
+        test_calculateISBN13CheckDigitValue "979109631539" 0
 
     describe "Testing ISBN-13 check digit confirmation" $ do
         let test_confirmISBN13CheckDigit isbn13string expecting =
@@ -32,6 +33,7 @@ spec = do
         test_confirmISBN13CheckDigit "9780345816023" True
         test_confirmISBN13CheckDigit "9780345816029" False
         test_confirmISBN13CheckDigit "9780807014295" True
+        test_confirmISBN13CheckDigit "9791096315390" True
 
     describe "Testing ISBN-13 checking" $ do
         let test_isISBN13 isbn13Val expecting =
@@ -69,6 +71,7 @@ spec = do
         test_validateISBN13 "978-0-306-40615-7" (Right $ unsafeToISBN13 "9780306406157")
         test_validateISBN13 "9780306406157"     (Right $ unsafeToISBN13 "9780306406157")
         test_validateISBN13 "9781519150240"     (Right $ unsafeToISBN13 "9781519150240")
+        test_validateISBN13 "9791096315390"     (Right $ unsafeToISBN13 "9791096315390")
         test_validateISBN13 "9780345816029"     (Left ISBN13InvalidCheckDigit)
         test_validateISBN13 "9780807014299"     (Left ISBN13InvalidCheckDigit)
         test_validateISBN13 "00000000000000"    (Left ISBN13InvalidInputLength)

@@ -46,7 +46,9 @@ import           Data.ISBN.Types ( ISBN (ISBN10) )
 -- @
 validateISBN10 :: Text -> Either ISBN10ValidationError ISBN
 validateISBN10 input = do
-    let inputWithoutHyphens = Text.filter (/= '-') input
+    -- Make a copy of the text input before further manipulation to prevent
+    -- space leaks if input text is a slice of a larger string
+    let inputWithoutHyphens = Text.filter (/= '-') $ Text.copy input
 
     unless (Text.length inputWithoutHyphens == 10) $
         Left ISBN10InvalidInputLength

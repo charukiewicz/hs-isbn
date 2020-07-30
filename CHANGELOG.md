@@ -1,5 +1,10 @@
 # Revision history for `isbn`
 
+## 1.1.0.1 - July 30, 2020
+
+- Changed implementation of `validateISBN` to make a copy of the input text, preventing space leaks
+- Added some test cases for ISBN-13s with a '979' prefix
+
 ## 1.1.0.0 - July 28, 2020
 
 - Changed exports in `Data.ISBN` module to not export the constructors of the `ISBN` data type

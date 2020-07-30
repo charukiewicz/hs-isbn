@@ -44,7 +44,9 @@ import           Data.ISBN.Types ( ISBN (ISBN13) )
 -- @
 validateISBN13 :: Text -> Either ISBN13ValidationError ISBN
 validateISBN13 input = do
-    let inputWithoutHyphens = Text.filter (/= '-') input
+    -- Make a copy of the text input before further manipulation to prevent
+    -- space leaks if input text is a slice of a larger string
+    let inputWithoutHyphens = Text.filter (/= '-') $ Text.copy input
 
     unless (Text.length inputWithoutHyphens == 13) $
         Left ISBN13InvalidInputLength
