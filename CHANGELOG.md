@@ -1,5 +1,12 @@
 # Revision history for `isbn`
 
+## 1.1.0.2 - November 13, 2020
+
+- Built documentation using GHC 8.8.4
+- Changed Nix shell development environment to use `fetchFromGitHub` instead of `fetchGit` for nixpkgs
+- Changed `hackage-build` Makefile target to split `sdist` and `docs` outputs into separate subdirectories of `build/`
+- Added `hackage-upload` and `hackage-upload-publish` Makefile targets to upload new package builds to Hackage
+
 ## 1.1.0.1 - July 30, 2020
 
 - Changed implementation of `validateISBN` to make a copy of the input text, preventing space leaks

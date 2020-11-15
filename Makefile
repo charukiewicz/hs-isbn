@@ -1,4 +1,4 @@
-.PHONY: help tests tests-watch docs docs-watch clean
+.PHONY: help tests tests-watch docs docs-watch clean hackage-build hackage-upload hackage-upload-publish
 
 # 'help' target originally taken from: https://github.com/parsonsmatt/servant-persistent
 help: ## Print help documentation
@@ -27,15 +27,26 @@ clean: ## Clear all build artifacts
 BUILD_TMP_DIR=build-tmp
 BUILD_DIR=build
 hackage-build: ## Build the package and documentation for Hackage
-	@mkdir -p $(BUILD_TMP_DIR)
+	@mkdir -p $(BUILD_TMP_DIR)/{sdist,docs}
 	@rm -rf $(BUILD_DIR)
-	@mkdir -p $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR)/{sdist,docs}
 	@cabal sdist --builddir=$(BUILD_TMP_DIR)
-	@cabal haddock --builddir=$(BUILD_TMP_DIR)/sdist --haddock-for-hackage --enable-documentation
-	@mv $(BUILD_TMP_DIR)/sdist/*.tar.gz build/
+	@cabal haddock --builddir=$(BUILD_TMP_DIR)/docs --haddock-for-hackage --enable-documentation
+	@mv $(BUILD_TMP_DIR)/sdist/*.tar.gz build/sdist/
+	@mv $(BUILD_TMP_DIR)/docs/*.tar.gz build/docs/
 	@rm -rf $(BUILD_TMP_DIR)
 	@echo "Done building package and documentation!"
 
+
+hackage-upload: hackage-build ## Upload package candidate to hackage
+	@cabal upload $(BUILD_DIR)/sdist/isbn-*.tar.gz
+	@cabal upload -d $(BUILD_DIR)/docs/isbn-*-docs.tar.gz
+	@echo "Done!"
+
+hackage-upload-publish: $(BUILD_DIR) ## Upload package candidate to hackage
+	@cabal upload --publish $(BUILD_DIR)/sdist/isbn-*.tar.gz
+	@cabal upload --publish -d $(BUILD_DIR)/docs/isbn-*-docs.tar.gz
+	@echo "Done!"
 
 ## Shell color codes
 

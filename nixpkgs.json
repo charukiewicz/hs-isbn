@@ -1,5 +1,6 @@
 {
-    "url": "https://github.com/NixOS/nixpkgs",
-    "ref": "nixos-20.03",
-    "rev": "025deb80b2412e5b7e88ea1de631d1bd65af1840"
+    "owner": "NixOS",
+    "repo": "nixpkgs",
+    "rev": "bc260badaebf67442befe20fb443034d3a91f2b3",
+    "sha256": "1iysc4xyk88ngkfb403xfq5bs3zy29zfs83pn99kchxd45nbpb5q"
 }

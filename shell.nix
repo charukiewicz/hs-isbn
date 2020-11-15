@@ -1,7 +1,8 @@
 let
   # Default set of pinned packages
+  bootstrap = import <nixpkgs> {};
   defaultPkgs = import (
-    builtins.fetchGit
+    bootstrap.fetchFromGitHub
       (builtins.fromJSON (builtins.readFile ./nixpkgs.json))
     ) {};
 
