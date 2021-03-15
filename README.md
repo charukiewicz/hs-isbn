@@ -1,6 +1,8 @@
 isbn: ISBN Validation and Manipulation
 ======================================
 
+[![Build Status](https://github.com/charukiewicz/hs-isbn/workflows/ci/badge.svg)](https://github.com/charukiewicz/hs-isbn/actions?query=workflow%3Aci) [![Hackage](http://img.shields.io/hackage/v/isbn.svg)](https://hackage.haskell.org/package/isbn) [![Hackage CI](https://matrix.hackage.haskell.org/api/v2/packages/isbn/badge)](https://matrix.hackage.haskell.org/package/isbn) [![Stackage LTS](http://stackage.org/package/isbn/badge/lts)](http://stackage.org/lts/package/isbn) [![Stackage Nightly](http://stackage.org/package/isbn/badge/nightly)](http://stackage.org/nightly/package/isbn)
+
 All books published by major publishers since 1970 have an International Standard Book Number (ISBN) associated with them. Prior to 2007, all ISBNs issued were ten digit ISBN-10 format. Since 2007, new ISBNs have been issued in the thirteen digit ISBN-13 format. See the [ISBN Wikipedia article](https://en.wikipedia.org/wiki/International_Standard_Book_Number) for more information.
 
 ## Overview
