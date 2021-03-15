@@ -9,8 +9,8 @@ tests: ## Run the tests with cabal
 
 tests-watch: ## Run the tests with ghcid, re-running each time the source files change
 	ghcid \
-		--command="cabal repl --flags=dev --repl-options=-ilib --repl-options=-itest isbn:isbn-test" \
-		--reload="lib" \
+		--command="cabal repl --flags=dev --disable-optimization --repl-options=-fobject-code --repl-options=-ilib --repl-options=-itest isbn:isbn-test" \
+		--reload="isbn.cabal" \
 		--test="Main.main"
 
 docs: ## Generate the Haddock documentation
