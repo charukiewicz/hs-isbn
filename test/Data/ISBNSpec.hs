@@ -5,9 +5,13 @@ module Data.ISBNSpec (spec) where
 import           Data.ISBN
 import           Data.ISBN.ISBN10
 import           Data.ISBN.ISBN13
+import           Data.Traversable
 
-import           Data.Text        ( pack )
+import           Data.Text             ( pack )
 import           Test.Hspec
+import           Test.Hspec
+import           Test.Hspec.QuickCheck
+import           Test.QuickCheck
 
 
 spec :: Spec
@@ -56,3 +60,28 @@ spec = do
         test_convertISBN13toISBN10 (unsafeToISBN13 "9780060899226") (Just $ unsafeToISBN10 "0060899220")
         test_convertISBN13toISBN10 (unsafeToISBN13 "9781519150240") (Just $ unsafeToISBN10 "1519150245")
         test_convertISBN13toISBN10 (unsafeToISBN13 "2222222222222") Nothing
+
+    describe "Property Based Tests" $ do
+        prop "can convert ISBN10 to ISBN13 and back to ISBN10" $ do
+            let generateISBN10Component = do
+                    vectorOf 9 $ chooseInteger (0,9)
+            withMaxSuccess 10000 $ forAll generateISBN10Component $ \isbn10Component ->
+                let
+                    isbn10WithoutCheckDigit = pack $ concat $ fmap show isbn10Component
+                    isbn10CheckDigit = pack $ pure $ numericValueToISBN10Char $ calculateISBN10CheckDigitValue isbn10WithoutCheckDigit
+
+                    isbn10 = either (const Nothing) Just $ validateISBN $ isbn10WithoutCheckDigit <> isbn10CheckDigit
+                in
+                    (convertISBN13toISBN10 . convertISBN10toISBN13 =<< isbn10) === isbn10 .&&. isbn10 =/= Nothing
+
+        prop "can convert 978-prefixed ISBN13 to ISBN10 and back to ISBN13" $ do
+            let generateISBN13Component = do
+                    vectorOf 9 $ chooseInteger (0,9)
+            withMaxSuccess 10000 $ forAll generateISBN13Component $ \isbn13Component ->
+                let
+                    isbn13WithoutCheckDigit = "978" <> (pack $ concat $ fmap show isbn13Component)
+                    isbn13CheckDigit = pack $ show $ calculateISBN13CheckDigitValue isbn13WithoutCheckDigit
+
+                    isbn13 = either (const Nothing) Just $ validateISBN $ isbn13WithoutCheckDigit <> isbn13CheckDigit
+                in
+                    (convertISBN10toISBN13 <$> (convertISBN13toISBN10 =<< isbn13)) === isbn13 .&&. isbn13 =/= Nothing
