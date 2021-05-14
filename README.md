@@ -1,7 +1,12 @@
 isbn: ISBN Validation and Manipulation
 ======================================
 
-[![Build Status](https://github.com/charukiewicz/hs-isbn/workflows/CI/badge.svg)](https://github.com/charukiewicz/hs-isbn/actions?query=workflow%3ACI) [![Hackage](http://img.shields.io/hackage/v/isbn.svg)](https://hackage.haskell.org/package/isbn) [![Hackage CI](https://matrix.hackage.haskell.org/api/v2/packages/isbn/badge)](https://matrix.hackage.haskell.org/package/isbn) [![Stackage LTS](http://stackage.org/package/isbn/badge/lts)](http://stackage.org/lts/package/isbn) [![Stackage Nightly](http://stackage.org/package/isbn/badge/nightly)](http://stackage.org/nightly/package/isbn)
+[![Build Status](https://github.com/charukiewicz/hs-isbn/workflows/CI/badge.svg)](https://github.com/charukiewicz/hs-isbn/actions?query=workflow%3ACI)
+[![Hackage](http://img.shields.io/hackage/v/isbn.svg)](https://hackage.haskell.org/package/isbn)
+[![Hackage CI](https://matrix.hackage.haskell.org/api/v2/packages/isbn/badge)](https://matrix.hackage.haskell.org/package/isbn)
+[![Stackage LTS](http://stackage.org/package/isbn/badge/lts)](http://stackage.org/lts/package/isbn)
+[![Stackage Nightly](http://stackage.org/package/isbn/badge/nightly)](http://stackage.org/nightly/package/isbn)
+[![Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 All books published by major publishers since 1970 have an International Standard Book Number (ISBN) associated with them. Prior to 2007, all ISBNs issued were ten digit ISBN-10 format. Since 2007, new ISBNs have been issued in the thirteen digit ISBN-13 format. See the [ISBN Wikipedia article](https://en.wikipedia.org/wiki/International_Standard_Book_Number) for more information.
 
