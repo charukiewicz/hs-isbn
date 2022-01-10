@@ -20,7 +20,8 @@ module Data.ISBN.ISBN10
 
 import           Control.Monad
 import           Data.Char
-import           Data.Text       as Text
+import           Data.Text       ( Text )
+import qualified Data.Text       as Text
 
 import           Data.ISBN.Types ( ISBN (ISBN10) )
 
@@ -124,11 +125,11 @@ confirmISBN10CheckDigit isbn10 =
 -- @
 calculateISBN10CheckDigitValue :: Text -> Int
 calculateISBN10CheckDigitValue input =
-    go 10 (unpack input) 0
+    go 10 (Text.unpack input) 0
       where
         go n charList acc =
             case charList of
-              [] -> (11 - (acc `mod` 11)) `mod` 11
+              []      -> (11 - (acc `mod` 11)) `mod` 11
               c:clist -> go (n - 1) clist (acc + isbn10CharToNumericValue c * n)
 
 
@@ -142,7 +143,7 @@ isbn10CharToNumericValue  c  = digitToInt c
 -- are the numbers from 0 to 10.
 numericValueToISBN10Char :: Int -> Char
 numericValueToISBN10Char 10 = 'X'
-numericValueToISBN10Char c  = Text.head $ pack $ show c
+numericValueToISBN10Char c  = Text.head $ Text.pack $ show c
 
 
 -- | Validates a character as a valid ISBN-10 check digit character.  ISBN-10

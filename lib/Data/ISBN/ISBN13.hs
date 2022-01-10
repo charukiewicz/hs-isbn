@@ -17,7 +17,8 @@ module Data.ISBN.ISBN13
 
 import           Control.Monad
 import           Data.Char
-import           Data.Text       as Text
+import           Data.Text       ( Text )
+import qualified Data.Text       as Text
 
 import           Data.ISBN.Types ( ISBN (ISBN13) )
 
@@ -116,7 +117,7 @@ confirmISBN13CheckDigit isbn13 =
 -- @
 calculateISBN13CheckDigitValue :: Text -> Int
 calculateISBN13CheckDigitValue input =
-    go 1 (unpack input) 0
+    go 1 (Text.unpack input) 0
       where
         go w charList acc =
             case charList of
@@ -132,7 +133,7 @@ isbn13CharToNumericValue = digitToInt
 -- | Converts a numeric value to an ISBN-13 character. Valid input values
 -- are the numbers from 0 to 10.
 numericValueToISBN13Char :: Int -> Char
-numericValueToISBN13Char c = Text.head $ pack $ show c
+numericValueToISBN13Char c = Text.head $ Text.pack $ show c
 
 -- | Determines whether an 'ISBN' value is an ISBN-13.
 --
