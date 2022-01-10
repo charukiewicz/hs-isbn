@@ -1,5 +1,9 @@
 # Revision history for `isbn`
 
+## 1.1.0.3 - January 10, 2022
+
+- Changed imports of `Data.Text` to be qualified to prevent ambiguous import issues caused by changed to `Prelude` in GHC 9.x.
+
 ## 1.1.0.2 - November 13, 2020
 
 - Built documentation using GHC 8.8.4
