@@ -46,7 +46,8 @@ import           Data.ISBN.ISBN10
 import           Data.ISBN.ISBN13
 
 import           Control.Monad
-import           Data.Text        as Text
+import           Data.Text        ( Text )
+import qualified Data.Text        as Text
 
 -- $introduction
 --
@@ -214,7 +215,7 @@ convertISBN10toISBN13 isbn10 =
 convertISBN13toISBN10 :: ISBN -> Maybe ISBN
 convertISBN13toISBN10 isbn13 = do
     let isbn13Text = renderISBN isbn13
-    unless ("978" `isPrefixOf` isbn13Text)
+    unless ("978" `Text.isPrefixOf` isbn13Text)
         Nothing -- "Only ISBN-13s that begin with '978' can be converted to ISBN-10s"
 
     let isbn10Body = Text.init $ Text.drop 3 isbn13Text
