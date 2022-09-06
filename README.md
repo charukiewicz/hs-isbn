@@ -3,7 +3,6 @@ isbn: ISBN Validation and Manipulation
 
 [![Build Status](https://github.com/charukiewicz/hs-isbn/workflows/CI/badge.svg)](https://github.com/charukiewicz/hs-isbn/actions?query=workflow%3ACI)
 [![Hackage](http://img.shields.io/hackage/v/isbn.svg)](https://hackage.haskell.org/package/isbn)
-[![Hackage CI](https://matrix.hackage.haskell.org/api/v2/packages/isbn/badge)](https://matrix.hackage.haskell.org/package/isbn)
 [![Stackage LTS](http://stackage.org/package/isbn/badge/lts)](http://stackage.org/lts/package/isbn)
 [![Stackage Nightly](http://stackage.org/package/isbn/badge/nightly)](http://stackage.org/nightly/package/isbn)
 [![Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](https://www.apache.org/licenses/LICENSE-2.0.html)
