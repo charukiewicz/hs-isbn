@@ -32,7 +32,7 @@ jobs:
       run: cabal update
     - name: Install hspec-discover
       run: cabal install hspec-discover
-    - uses: actions/cache@v3.2.1
+    - uses: actions/cache@v3.2.2
       name: Cache cabal output
       with:
         path: |
