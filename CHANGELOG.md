@@ -1,5 +1,11 @@
 # Revision history for `isbn`
 
+## 1.1.0.5 - Dec 26, 2023
+
+- Bump version of `text` dependency to include versions up to 2.2 (exclusive)
+- Add `flake.nix` file for Nix Flake-based development (via `nix develop`)
+- Bump `nixpkgs.json` to `release-23.11` branch of Nixpkgs for `nix-shell` based development
+
 ## 1.1.0.4 - September 6, 2022
 
 - Bumped version bound of `text` dependency to include `text-2.0.x`.

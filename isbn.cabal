@@ -1,7 +1,7 @@
 cabal-version:       2.4
 
 name:                isbn
-version:             1.1.0.4
+version:             1.1.0.5
 synopsis:            ISBN Validation and Manipulation
 description:         See the README at <https://github.com/charukiewicz/hs-isbn#readme>
 homepage:            https://github.com/charukiewicz/hs-isbn
@@ -10,7 +10,7 @@ license:             Apache-2.0
 license-file:        LICENSE
 author:              Christian Charukiewicz
 maintainer:          charukiewicz@protonmail.com
-copyright:           © 2022 Christian Charukiewicz
+copyright:           © 2024 Christian Charukiewicz
 category:            Data
 extra-doc-files:
     CHANGELOG.md
@@ -34,7 +34,7 @@ library
                      , Data.ISBN.ISBN13
                      , Data.ISBN.Types
   build-depends:       base >=4.9 && < 5.0
-                     , text >= 1.2 && < 2.1
+                     , text >= 1.2 && < 2.2
   hs-source-dirs:      lib
   if(flag(dev))
       ghc-options:     -Wall
