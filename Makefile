@@ -43,7 +43,7 @@ hackage-upload: hackage-build ## Upload package candidate to hackage
 	@cabal upload -d $(BUILD_DIR)/docs/isbn-*-docs.tar.gz
 	@echo "Done!"
 
-hackage-upload-publish: $(BUILD_DIR) ## Upload package candidate to hackage
+hackage-upload-publish: $(BUILD_DIR) ## Upload package to hackage (published)
 	@cabal upload --publish $(BUILD_DIR)/sdist/isbn-*.tar.gz
 	@cabal upload --publish -d $(BUILD_DIR)/docs/isbn-*-docs.tar.gz
 	@echo "Done!"

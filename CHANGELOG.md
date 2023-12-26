@@ -1,6 +1,6 @@
 # Revision history for `isbn`
 
-## 1.1.0.5 - Dec 26, 2023
+## 1.1.0.5 - December 26, 2023
 
 - Bump version of `text` dependency to include versions up to 2.2 (exclusive)
 - Add `flake.nix` file for Nix Flake-based development (via `nix develop`)
